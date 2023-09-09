@@ -1,0 +1,2 @@
+import speedtest
+import time
