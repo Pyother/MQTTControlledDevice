@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-import serial as serial 
+from blink_led import blink_led
 
 def on_connect(client, userdata, flags, rc): 
     print("Connected with result code "+str(rc))
@@ -7,6 +7,7 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     print(msg.topic+" "+str(msg.payload))
+    blink_led()
 
 client = mqtt.Client()
 client.on_connect = on_connect
