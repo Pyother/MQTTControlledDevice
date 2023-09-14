@@ -1,6 +1,6 @@
 import speedtest
 
-wifi = speedtest.Speedtest()
+wifi = speedtest.Speedtest(secure=True)
 
 def wifitest():
     print("Getting download speed ...")
@@ -9,9 +9,9 @@ def wifitest():
     print("Getting upload speed ...")
     upload_speed = wifi.upload()
 
-    print("Download: ", download_speed)
-    print("Upload: ", upload_speed)
+    print("Download: ", download_speed / 1000000)
+    print("Upload: ", upload_speed / 1000000)
     
-    message = "wifitest_callback:" + str(download_speed) + ":" + str(upload_speed)
+    message = "wifitest_callback:" + str(round(download_speed / 1000000,2)) + ":" + str(round(upload_speed / 1000000,2))
 
     return (message)
