@@ -1,2 +1,4 @@
 def methane_measurement():
-    pass
+    
+    message = "methane_callback:" + str(25.00)
+    return(message)

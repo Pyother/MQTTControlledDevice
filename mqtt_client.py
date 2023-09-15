@@ -19,13 +19,14 @@ def on_message(client, userdata, msg):
 
     if "drive" in message:
         print("→ Drive request received")
-        
 
     if "carbon_monoxide_measurement" in message:
         print("→ Carbon Monoxide measurement request received")
+        client.publish(topic="AreaExplorer", payload=str(carbon_monoxide_measurement()))
 
     if "methane_measurement" in message:
         print("→ Methane measurement request received")
+        client.publish(topic="AreaExplorer", payload=str(methane_measurement()))
 
     #blink_led()
 

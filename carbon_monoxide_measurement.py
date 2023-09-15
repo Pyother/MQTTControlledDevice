@@ -1,2 +1,4 @@
 def carbon_monoxide_measurement():
-    pass
+
+    message = "carbon_monoxide_callback:" + str(25.00)
+    return(message)
