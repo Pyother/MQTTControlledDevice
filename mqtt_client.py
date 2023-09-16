@@ -1,18 +1,35 @@
 import paho.mqtt.client as mqtt
-from blink_led import blink_led
+from wifitest import wifitest
+from drive import drive
+from carbon_monoxide_measurement import carbon_monoxide_measurement
+from methane_measurement import methane_measurement
+#from blink_led import blink_led
 from speedtest import speedtest
 
 def on_connect(client, userdata, flags, rc): 
     print("Connected with result code "+str(rc))
-    client.subscribe("measurements")
+    client.subscribe("AreaExplorer")
 
 def on_message(client, userdata, msg):
     message = (str(msg.payload))[2:-1]
-    print("On topic "+msg.topic+" received: "+message)
-    
-    blink_led()
-    if message == "speedtest":
-        speedtest()
+    print(message)
+
+    if "speedtest" in message: 
+        print("→ Wifi test request received")
+        client.publish(topic="AreaExplorer", payload=str(wifitest()))
+
+    if "drive" in message:
+        print("→ Drive request received")
+
+    if "carbon_monoxide_measurement" in message:
+        print("→ Carbon Monoxide measurement request received")
+        client.publish(topic="AreaExplorer", payload=str(carbon_monoxide_measurement()))
+
+    if "methane_measurement" in message:
+        print("→ Methane measurement request received")
+        client.publish(topic="AreaExplorer", payload=str(methane_measurement()))
+
+    #blink_led()
 
 client = mqtt.Client()
 client.on_connect = on_connect
