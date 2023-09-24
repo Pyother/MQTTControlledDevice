@@ -1,13 +1,16 @@
 import paho.mqtt.client as mqtt
 from wifitest import wifitest
-from drive import drive
+# from drive import drive
 from carbon_monoxide_measurement import carbon_monoxide_measurement
 from methane_measurement import methane_measurement
+import asyncio
+import time
 #from blink_led import blink_led
 
 def on_connect(client, userdata, flags, rc): 
     print("Connected with result code "+str(rc))
     client.subscribe("AreaExplorer")
+    # connection_check()
 
 def on_message(client, userdata, msg):
     message = (str(msg.payload))[2:-1]
@@ -29,6 +32,12 @@ def on_message(client, userdata, msg):
         client.publish(topic="AreaExplorer", payload=str(methane_measurement()))
 
     #blink_led()
+
+async def connection_check():
+    while 1:
+        print("↻ Callback")
+        time.sleep(2)
+    
 
 client = mqtt.Client()
 client.on_connect = on_connect
