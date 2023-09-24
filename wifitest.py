@@ -1,6 +1,6 @@
 import speedtest
 
-wifi = speedtest.Speedtest(secure=True)
+wifi = speedtest.speedtest()
 
 def wifitest():
     print("Getting download speed ...")

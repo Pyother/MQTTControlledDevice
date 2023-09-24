@@ -3,10 +3,8 @@ from wifitest import wifitest
 # from drive import drive
 from carbon_monoxide_measurement import carbon_monoxide_measurement
 from methane_measurement import methane_measurement
-import asyncio
 import time
 #from blink_led import blink_led
-from speedtest import speedtest
 
 def on_connect(client, userdata, flags, rc): 
     print("Connected with result code "+str(rc))
@@ -23,6 +21,9 @@ def on_message(client, userdata, msg):
 
     if "drive" in message:
         print("→ Drive request received")
+        direction = ((message.split(":")[2]).split('"')[0])
+        print("Direction: ", direction)
+        # drive(direction)
 
     if "carbon_monoxide_measurement" in message:
         print("→ Carbon Monoxide measurement request received")

@@ -28,20 +28,6 @@ def south():
     GPIO.output(IN3, GPIO.LOW)
     GPIO.output(IN4, GPIO.HIGH)
 
-# Funkcja do skrętu w lewo
-def west():
-    GPIO.output(IN1, GPIO.LOW)
-    GPIO.output(IN2, GPIO.LOW)
-    GPIO.output(IN3, GPIO.HIGH)
-    GPIO.output(IN4, GPIO.LOW)
-
-# Funkcja do skrętu w prawo
-def east():
-    GPIO.output(IN1, GPIO.HIGH)
-    GPIO.output(IN2, GPIO.LOW)
-    GPIO.output(IN3, GPIO.LOW)
-    GPIO.output(IN4, GPIO.LOW)
-
 # Funkcja do zatrzymania silników
 def stop():
     GPIO.output(IN1, GPIO.LOW)
@@ -49,28 +35,13 @@ def stop():
     GPIO.output(IN3, GPIO.LOW)
     GPIO.output(IN4, GPIO.LOW)
 
-def drive():
-    try:
-        while True:
-            # Testowanie ruchu silników
-            north()
-            time.sleep(2)
-
-            south()
-            time.sleep(2)
-
-            west()
-            time.sleep(2)
-
-            east()
-            time.sleep(2)
-
-            stop()
-            time.sleep(2)
-
-    except KeyboardInterrupt:
-        # Obsługa przerwania programu przez użytkownika (Ctrl+C)
+def drive(direction):
+    if direction == "north":
+        north()
+        time.sleep(1)
         stop()
-        GPIO.cleanup()
 
-drive()
+    if direction == "south":
+        south()
+        time.sleep(1)
+        stop()
