@@ -6,6 +6,7 @@ from methane_measurement import methane_measurement
 import asyncio
 import time
 #from blink_led import blink_led
+from speedtest import speedtest
 
 def on_connect(client, userdata, flags, rc): 
     print("Connected with result code "+str(rc))
