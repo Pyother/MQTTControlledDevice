@@ -1,6 +1,8 @@
-import speedtest
+# -*- coding: utf-8 -*-
 
-wifi = speedtest.speedtest()
+import speedtest as speedtest
+
+wifi = Speedtest()
 
 def wifitest():
     print("Getting download speed ...")
@@ -15,3 +17,4 @@ def wifitest():
     message = "wifitest_callback:" + str(round(download_speed / 1000000,2)) + ":" + str(round(upload_speed / 1000000,2))
 
     return (message)
+

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import RPi.GPIO as GPIO
 import time
 
@@ -38,10 +40,12 @@ def stop():
 def drive(direction):
     if direction == "north":
         north()
-        time.sleep(1)
+        time.sleep(0.5)
         stop()
 
     if direction == "south":
         south()
-        time.sleep(1)
+        time.sleep(0.5)
         stop()
+
+

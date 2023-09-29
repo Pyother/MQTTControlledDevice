@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
+
 import paho.mqtt.client as mqtt
-from wifitest import wifitest
-# from drive import drive
+#from wifitest import wifitest
+from drive import drive
 from carbon_monoxide_measurement import carbon_monoxide_measurement
 from methane_measurement import methane_measurement
 import time
@@ -12,18 +14,18 @@ def on_connect(client, userdata, flags, rc):
     # connection_check()
 
 def on_message(client, userdata, msg):
-    message = (str(msg.payload))[2:-1]
+    message = (str(msg.payload))
     print(message)
 
     if "speedtest" in message: 
         print("→ Wifi test request received")
-        client.publish(topic="AreaExplorer", payload=str(wifitest()))
+        #client.publish(topic="AreaExplorer", payload=str(wifitest()))
 
     if "drive" in message:
         print("→ Drive request received")
         direction = ((message.split(":")[2]).split('"')[0])
         print("Direction: ", direction)
-        # drive(direction)
+        drive(direction)
 
     if "carbon_monoxide_measurement" in message:
         print("→ Carbon Monoxide measurement request received")
@@ -33,13 +35,7 @@ def on_message(client, userdata, msg):
         print("→ Methane measurement request received")
         client.publish(topic="AreaExplorer", payload=str(methane_measurement()))
 
-    #blink_led()
-
-async def connection_check():
-    while 1:
-        print("↻ Callback")
-        time.sleep(2)
-    
+    #blink_led()    
 
 client = mqtt.Client()
 client.on_connect = on_connect
