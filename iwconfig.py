@@ -18,16 +18,12 @@ def get_signal_level():
             signal_level = signal_level_match.group(1)
 
         if essid and signal_level:
-            return ({
-                'essid': format(essid),
-                'signal_level': format(signal_level)
-            })
+	    string = str(essid) + ":" + str(signal_level)
+            return (string)
         else:
             print("Some error occurred")
     
     except subprocess.CalledProcessError as e:
         print(e)
-
-
 
 print(get_signal_level())

@@ -5,8 +5,8 @@ import paho.mqtt.client as mqtt
 from drive import drive
 from carbon_monoxide_measurement import carbon_monoxide_measurement
 from methane_measurement import methane_measurement
+from iwconfig import get_signal_level
 import time
-#from blink_led import blink_led
 
 def on_connect(client, userdata, flags, rc): 
     print("Connected with result code "+str(rc))
@@ -19,7 +19,8 @@ def on_message(client, userdata, msg):
 
     if "speedtest" in message: 
         print("→ Wifi test request received")
-        #client.publish(topic="AreaExplorer", payload=str(wifitest()))
+	string = "wifitest_callback|" + str(get_signal_level())
+	client.publish(topic="AreaExplorer", payload=string)
 
     if "drive" in message:
         print("→ Drive request received")
@@ -35,11 +36,9 @@ def on_message(client, userdata, msg):
         print("→ Methane measurement request received")
         client.publish(topic="AreaExplorer", payload=str(methane_measurement()))
 
-    #blink_led()    
-
 client = mqtt.Client()
 client.on_connect = on_connect
-client.on_message = on_message 
+client.on_message = on_message
 
 client.connect("test.mosquitto.org", 1883, 60)
 client.loop_forever()

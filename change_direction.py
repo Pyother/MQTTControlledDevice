@@ -20,7 +20,6 @@ def turn(direction):
                         ser.write(b"*")
 
                 line = ser.readline().decode('utf-8').rstrip()
-                print(line)
-                sleep(1)
+                sleep(0.65)
                 counter = counter + 1
 

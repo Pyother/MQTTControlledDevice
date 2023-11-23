@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from gpiozero import AngularServo
+import serial
 import time
 
-servo = AngularServo(13, min_pulse_width=0.0005, max_pulse_width=0.0025)
-
-while (True):
-	servo.angle = 90
+while True:
+	ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+	ser.reset_input_buffer()	
+	time.sleep(1)
+        ser.write(b"#")
 	time.sleep(2)
-	servo.angle = 0 
-	time.sleep(2)
-	servo.angle = -90
-	time.sleep(2)
-
+	ser.write(b"*")
