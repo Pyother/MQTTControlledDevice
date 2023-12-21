@@ -4,15 +4,17 @@ import paho.mqtt.client as mqtt
 from drive import drive
 from iwconfig import get_signal_level
 import serial
-import asyncio
+from time import sleep
+import threading
 
-DENSITY_MEASUREMENT = False
+DENSITY_MEASUREMENT = True
 
 def on_connect(client, userdata, flags, rc): 
 	print("Connected with result code "+str(rc))
 	client.subscribe("AreaExplorer")
 
 def on_message(client, userdata, msg):
+	global DENSITY_MEASUREMENT
 	message = (str(msg.payload))
 	print(message)
 
@@ -37,15 +39,32 @@ def on_message(client, userdata, msg):
 		print("→ Density measurement stopped")
 		DENSITY_MEASUREMENT = False
 
-async def measurement_loop():
-	pass
+def mqtt_loop():
 
-client = mqtt.Client()
-client.on_connect = on_connect
-client.on_message = on_message
+	client = mqtt.Client()
+	client.on_connect = on_connect
+	client.on_message = on_message
 
-client.connect("test.mosquitto.org", 1883, 60)
-client.loop_forever()
+	client.connect("test.mosquitto.org", 1883, 60)
+	client.loop_forever()
+
+def density_measurement_loop():
+
+	while True:
+		if DENSITY_MEASUREMENT:
+			ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+			ser.reset_input_buffer()
+			
+			while True:
+				if ser.in_waiting > 0:
+					line = ser.readline().decode('utf-8').rstrip()
+					print(line)
+
+mqtt_thread = threading.Thread(target=mqtt_loop)
+mqtt_thread.start()
+
+density_measurement_loop()
+
 
 
 
