@@ -7,7 +7,7 @@ import serial
 from time import sleep
 import threading
 
-DENSITY_MEASUREMENT = True
+DENSITY_MEASUREMENT = False
 
 def on_connect(client, userdata, flags, rc): 
 	print("Connected with result code "+str(rc))
@@ -47,19 +47,18 @@ def mqtt_loop():
 def density_measurement_loop():
 
 	while True:
-		if DENSITY_MEASUREMENT:
-			ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
-			ser.reset_input_buffer()
+		if DENSITY_MEASUREMENT and ser.in_waiting > 0:
+			line = ser.readline().decode('utf-8').rstrip()
+			print(line)
+			client.publish(topic="AreaExplorer", payload=str(line))
 
-			while True:
-				if ser.in_waiting > 0:
-					line = ser.readline().decode('utf-8').rstrip()
-					print(line)
-					client.publish(topic="AreaExplorer", payload=str(line))
 
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
+
+ser = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+ser.reset_input_buffer()
 
 mqtt_thread = threading.Thread(target=mqtt_loop)
 mqtt_thread.start()
